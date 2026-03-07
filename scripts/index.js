@@ -379,6 +379,104 @@ function renderProjects(projects) {
 // Supports: drag to scroll, prev/next buttons, dot indicators
 // ═══════════════════════════════════════════════════════
 
+// function renderGalleries(galleries) {
+//     const list = document.getElementById('galleries-list');
+
+//     galleries.forEach(gallery => {
+//         const block = document.createElement('div');
+//         block.className = 'gallery-block';
+
+//         // Title
+//         const title = document.createElement('p');
+//         title.className = 'gallery-title';
+//         title.textContent = gallery.title;
+//         block.appendChild(title);
+
+//         // Carousel wrapper (holds track + buttons)
+//         const wrapper = document.createElement('div');
+//         wrapper.className = 'carousel-wrapper';
+
+//         // Scrollable image track
+//         const track = document.createElement('div');
+//         track.className = 'carousel-track';
+
+//         gallery.images.forEach((src, idx) => {
+//             const img = document.createElement('img');
+//             img.src       = src;
+//             img.alt       = gallery.title;
+//             img.draggable = false;
+//             // Click to open lightbox at this image's index
+//             img.addEventListener('click', () => openLightbox(gallery.images, idx));
+//             track.appendChild(img);
+//         });
+
+//         // Prev button
+//         const prevBtn = document.createElement('button');
+//         const gap = 8;
+//         prevBtn.className = 'carousel-btn prev';
+//         prevBtn.innerHTML = '&#8592;';
+//         prevBtn.addEventListener('click', () => {
+//             const imgW = track.querySelector('img').offsetWidth + gap;
+//             track.scrollBy({ left: -imgW, behavior: 'smooth' });
+//         });
+
+//         // Next button
+//         const nextBtn = document.createElement('button');
+//         nextBtn.className = 'carousel-btn next';
+//         nextBtn.innerHTML = '&#8594;';
+//         nextBtn.addEventListener('click', () => {
+//             track.scrollBy({ left: 540, behavior: 'smooth' });
+//         });
+
+//         wrapper.appendChild(prevBtn);
+//         wrapper.appendChild(track);
+//         wrapper.appendChild(nextBtn);
+//         block.appendChild(wrapper);
+
+//         // Dot indicators
+//         const dotsRow = document.createElement('div');
+//         dotsRow.className = 'carousel-dots';
+//         const dots = gallery.images.map((_, i) => {
+//             const dot = document.createElement('div');
+//             dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+//             dot.addEventListener('click', () => {
+//                 const imgWidth = track.querySelector('img').offsetWidth + 8;
+//                 track.scrollTo({ left: imgWidth * i, behavior: 'smooth' });
+//             });
+//             dotsRow.appendChild(dot);
+//             return dot;
+//         });
+//         block.appendChild(dotsRow);
+
+//         // Update active dot on scroll
+//         track.addEventListener('scroll', () => {
+//             const imgWidth = track.querySelector('img').offsetWidth + 8;
+//             const index    = Math.round(track.scrollLeft / imgWidth);
+//             dots.forEach((d, i) => d.classList.toggle('active', i === index));
+//         });
+
+//         // ── Drag to scroll (mouse) ──
+//         let isDragging = false, startX = 0, startScroll = 0;
+
+//         track.addEventListener('mousedown', e => {
+//             isDragging  = true;
+//             startX      = e.pageX;
+//             startScroll = track.scrollLeft;
+//             track.classList.add('grabbing');
+//         });
+//         document.addEventListener('mousemove', e => {
+//             if (!isDragging) return;
+//             track.scrollLeft = startScroll - (e.pageX - startX);
+//         });
+//         document.addEventListener('mouseup', () => {
+//             isDragging = false;
+//             track.classList.remove('grabbing');
+//         });
+
+//         list.appendChild(block);
+//     });
+// }
+
 function renderGalleries(galleries) {
     const list = document.getElementById('galleries-list');
 
@@ -410,14 +508,25 @@ function renderGalleries(galleries) {
             track.appendChild(img);
         });
 
+        // Helper — snap to a specific index
+        function scrollToIndex(idx) {
+            const imgW  = track.querySelector('img').offsetWidth + 8;
+            const total = track.querySelectorAll('img').length;
+            // Clamp index within bounds
+            const target = Math.max(0, Math.min(idx, total - 1));
+            track.scrollTo({ left: imgW * target, behavior: 'smooth' });
+        }
+
+        // Track current index for button presses
+        let carouselIndex = 0;
+
         // Prev button
         const prevBtn = document.createElement('button');
-        const gap = 8;
         prevBtn.className = 'carousel-btn prev';
         prevBtn.innerHTML = '&#8592;';
         prevBtn.addEventListener('click', () => {
-            const imgW = track.querySelector('img').offsetWidth + gap;
-            track.scrollBy({ left: -imgW, behavior: 'smooth' });
+            carouselIndex = Math.max(0, carouselIndex - 1);
+            scrollToIndex(carouselIndex);
         });
 
         // Next button
@@ -425,7 +534,8 @@ function renderGalleries(galleries) {
         nextBtn.className = 'carousel-btn next';
         nextBtn.innerHTML = '&#8594;';
         nextBtn.addEventListener('click', () => {
-            track.scrollBy({ left: 540, behavior: 'smooth' });
+            carouselIndex = Math.min(gallery.images.length - 1, carouselIndex + 1);
+            scrollToIndex(carouselIndex);
         });
 
         wrapper.appendChild(prevBtn);
@@ -448,10 +558,11 @@ function renderGalleries(galleries) {
         });
         block.appendChild(dotsRow);
 
-        // Update active dot on scroll
+        // Update active dot + sync carouselIndex when user manually scrolls
         track.addEventListener('scroll', () => {
             const imgWidth = track.querySelector('img').offsetWidth + 8;
             const index    = Math.round(track.scrollLeft / imgWidth);
+            carouselIndex  = index; // keep button index in sync with manual scroll
             dots.forEach((d, i) => d.classList.toggle('active', i === index));
         });
 
