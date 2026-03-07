@@ -412,10 +412,12 @@ function renderGalleries(galleries) {
 
         // Prev button
         const prevBtn = document.createElement('button');
+        const gap = 8;
         prevBtn.className = 'carousel-btn prev';
         prevBtn.innerHTML = '&#8592;';
         prevBtn.addEventListener('click', () => {
-            track.scrollBy({ left: -540, behavior: 'smooth' });
+            const imgW = track.querySelector('img').offsetWidth + gap;
+            track.scrollBy({ left: -imgW, behavior: 'smooth' });
         });
 
         // Next button
