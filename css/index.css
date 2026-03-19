@@ -14,7 +14,6 @@ html { scroll-behavior: auto; }
             height: 100dvh;
             overflow: hidden;
             background: #000;
-            /* Establish a containing block so position:absolute children fill it */
             isolation: isolate;
         }
 
@@ -26,7 +25,7 @@ html { scroll-behavior: auto; }
             pointer-events: none;
         }
 
-        /* Mobile: video sits inset with rounded corners and black border */
+        /* Mobile: video inset with rounded corners and black border */
         @media (max-width: 767px) {
             #src-video {
                 width: calc(100vw - 32px) !important;
@@ -55,214 +54,154 @@ html { scroll-behavior: auto; }
             z-index: 1;
         }
 
-/* ═══════════════════════════════════════════════════════
-   GALLERY CAROUSEL
-   ═══════════════════════════════════════════════════════ */
 
-.gallery-block {
-    margin-bottom: 72px;
+/* ── Projects Section ── */
+.projects-section {
+    padding: 5rem 1.25rem;
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
-.gallery-title {
-    font-size: 0.7rem;
-    letter-spacing: 0.25em;
+.section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: #6b7280;
-    margin-bottom: 16px;
+    color: rgba(240, 248, 227, 0.35);
+    margin-bottom: 4rem;
 }
 
-.carousel-wrapper {
+.project-card {
+    border-top: 1px solid rgba(240, 248, 227, 0.12);
+    padding: 3.5rem 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5rem;
+    align-items: start;
+    transition: border-color 0.4s;
+}
+
+.project-card:last-of-type {
+    border-bottom: 1px solid rgba(240, 248, 227, 0.12);
+}
+
+.project-card:hover {
+    border-color: rgba(240, 248, 227, 0.28);
+}
+
+@media (max-width: 768px) {
+    .project-card {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+        padding: 2.25rem 0;
+    }
+}
+
+.project-media {
     position: relative;
-}
-
-/* The scrollable track */
-.carousel-track {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
-    cursor: grab;
-}
-.carousel-track::-webkit-scrollbar { display: none; }
-.carousel-track.grabbing { cursor: grabbing; }
-
-.carousel-track img {
-    flex-shrink: 0;
-    width: 70vw;
-    max-width: 520px;
-    height: 320px;
-    object-fit: cover;
-    border-radius: 6px;
-    scroll-snap-align: start;
-    display: block;
-    user-select: none;
-    -webkit-user-drag: none;
-}
-
-@media (max-width: 767px) {
-    .carousel-track img {
-        width: 90vw;
-        height: 240px;
-        scroll-snap-align: center;
-    }
-
-    /* Scope padding ONLY to carousel track, not gif rows */
-    .carousel-wrapper .carousel-track {
-        padding: 0 5vw;
-        scroll-padding: 0 5vw;
-    }
-}
-
-/* ── Project GIF rows ── */
-.gif-row {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 12px;
-    border-radius: 6px;
+    aspect-ratio: 16 / 9;
+    background: rgba(240, 248, 227, 0.03);
+    border: 1px solid rgba(240, 248, 227, 0.09);
     overflow: hidden;
 }
 
-.gif-row img {
-    flex: 1;
-    min-width: 0;        /* prevents flex children overflowing */
-    height: 28vw;        /* scales with viewport width */
-    max-height: 220px;   /* cap on desktop */
-    min-height: 100px;   /* floor on tiny screens */
+.project-media img,
+.project-media video {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     display: block;
-    border-radius: 4px;
-    transition: opacity 0.3s;
+    transition: transform 0.55s ease;
 }
 
-@media (max-width: 767px) {
-    .gif-row img {
-        height: 32vw;
-        border-radius: 3px;
-    }
-}
-
-/* Prev / Next arrow buttons */
-.carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: #fff;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+.project-info {
     display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.project-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.35em;
+    color: rgba(240, 248, 227, 0.25);
+    text-transform: uppercase;
+}
+
+.project-title {
+    font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #F0F8E3;
+}
+
+.project-desc {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    line-height: 1.8;
+    color: rgba(240, 248, 227, 0.48);
+}
+
+.project-desc ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.project-desc ul li::before {
+    content: '— ';
+    color: rgba(240, 248, 227, 0.25);
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #f5c842;
+    border: 1px solid rgba(240, 248, 227, 0.13);
+    padding: 0.25rem 0.55rem;
+    border-radius: 1px;
+}
+
+.project-links {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 2;
-    transition: background 0.2s;
-}
-.carousel-btn:hover { background: rgba(255,255,255,0.18); }
-.carousel-btn.prev { left: -16px; }
-.carousel-btn.next { right: -16px; }
-
-/* Dot indicators */
-.carousel-dots {
-    display: flex;
-    gap: 6px;
-    justify-content: center;
-    margin-top: 14px;
-}
-.carousel-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.2);
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-}
-.carousel-dot.active {
-    background: rgba(255,255,255,0.8);
-    transform: scale(1.3);
+    margin-top: 0.25rem;
 }
 
-
-/* ═══════════════════════════════════════════════════════
-   IMAGE LIGHTBOX
-   ═══════════════════════════════════════════════════════ */
-
-#img-lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-    background: rgba(0,0,0,0.95);
+.proj-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #F0F8E3;
+    text-decoration: none;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    cursor: zoom-out;
+    gap: 0.4rem;
+    padding-bottom: 2px;
+    border-bottom: 1px solid rgba(240, 248, 227, 0.28);
+    transition: border-color 0.2s, opacity 0.2s;
 }
 
-#img-lightbox.open {
-    display: flex;
+.proj-link:hover {
+    border-color: #F0F8E3;
 }
 
-#img-lightbox img {
-    max-width: 92vw;
-    max-height: 88vh;
-    object-fit: contain;
-    border-radius: 4px;
-    box-shadow: 0 0 80px rgba(0,0,0,0.8);
-    cursor: default;
-    /* Animate in */
-    animation: lightbox-in 0.2s ease;
-}
-
-@keyframes lightbox-in {
-    from { opacity: 0; transform: scale(0.95); }
-    to   { opacity: 1; transform: scale(1); }
-}
-
-#img-lightbox-close {
-    position: absolute;
-    top: 20px;
-    right: 24px;
-    color: white;
-    font-size: 2rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    line-height: 1;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-}
-#img-lightbox-close:hover { opacity: 1; }
-
-/* Prev / Next on lightbox */
-#img-lightbox-prev,
-#img-lightbox-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: #fff;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: background 0.2s;
-}
-#img-lightbox-prev:hover,
-#img-lightbox-next:hover { background: rgba(255,255,255,0.18); }
-#img-lightbox-prev { left: 20px; }
-#img-lightbox-next { right: 20px; }
-
-/* Carousel images are clickable */
-.carousel-track img {
-    cursor: zoom-in;
+.proj-link.muted {
+    opacity: 0.3;
+    pointer-events: none;
 }
 

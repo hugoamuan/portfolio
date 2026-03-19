@@ -649,3 +649,4 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') lightboxStep(1);
     if (e.key === 'Escape')     closeLightbox();
 });
+

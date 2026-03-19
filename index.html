@@ -1,11 +1,13 @@
 <!doctype html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/index.css">
 </head>
+
 <body class="bg-black">
 
     <!-- ── Nav ── -->
@@ -13,16 +15,17 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="flex items-center justify-between h-14 sm:h-16">
                 <div class="flex items-center space-x-2 sm:space-x-3">
-                    <span class="text-base sm:text-xl font-semibold text-[#F0F8E3]">Marshall Ryan</span>
+                    <span class="text-base sm:text-xl font-semibold text-[#F0F8E3]">Hugo</span>
                 </div>
                 <!-- Desktop menu -->
                 <div class="hidden md:flex space-x-8">
                     <a href="#" class="text-[#F0F8E3] hover:text-gray-300 transition">Home</a>
-                    <a href="#" class="text-[#F0F8E3] hover:text-gray-300 transition">Gallery</a>
-                    <a href="#" class="text-[#F0F8E3] hover:text-gray-300 transition">Contact</a>
+                    <a href="#about" class="text-[#F0F8E3] hover:text-gray-300 transition">About</a>
+                    <a href="#projects" class="text-[#F0F8E3] hover:text-gray-300 transition">Projects</a>
                 </div>
                 <!-- Mobile hamburger -->
-                <button id="menu-btn" class="md:hidden flex flex-col justify-center items-center gap-1.5 p-2 focus:outline-none">
+                <button id="menu-btn"
+                    class="md:hidden flex flex-col justify-center items-center gap-1.5 p-2 focus:outline-none">
                     <span class="block w-6 h-0.5 bg-[#F0F8E3] transition-all duration-300" id="bar1"></span>
                     <span class="block w-6 h-0.5 bg-[#F0F8E3] transition-all duration-300" id="bar2"></span>
                     <span class="block w-6 h-0.5 bg-[#F0F8E3] transition-all duration-300" id="bar3"></span>
@@ -33,8 +36,8 @@
         <div id="mobile-menu" class="hidden md:hidden bg-black/95 border-t border-white/10">
             <div class="px-4 py-4 flex flex-col space-y-1">
                 <a href="#" class="block py-3 px-2 text-[#F0F8E3] hover:text-gray-300 text-lg">Home</a>
-                <a href="#" class="block py-3 px-2 text-[#F0F8E3] hover:text-gray-300 text-lg">Gallery</a>
-                <a href="#" class="block py-3 px-2 text-[#F0F8E3] hover:text-gray-300 text-lg">Contact</a>
+                <a href="#about" class="block py-3 px-2 text-[#F0F8E3] hover:text-gray-300 text-lg">About</a>
+                <a href="#projects" class="block py-3 px-2 text-[#F0F8E3] hover:text-gray-300 text-lg">Projects</a>
             </div>
         </div>
     </nav>
@@ -43,13 +46,17 @@
     <div id="scroll-driver">
         <div id="hero-sticky">
             <video id="src-video" autoplay muted loop playsinline>
-                <source src="hero-ready.mp4" type="video/mp4">
+                <source src="final_hero.mp4" type="video/mp4">
             </video>
             <canvas id="video-canvas"></canvas>
             <!-- iOS play button overlay — hidden once video starts -->
-            <div id="play-overlay" style="display:none; position:absolute; inset:0; z-index:10; align-items:center; justify-content:center; cursor:pointer;">
-                <div style="width:72px; height:72px; border-radius:50%; background:rgba(255,255,255,0.15); backdrop-filter:blur(8px); border:2px solid rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center;">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+            <div id="play-overlay"
+                style="display:none; position:absolute; inset:0; z-index:10; align-items:center; justify-content:center; cursor:pointer;">
+                <div
+                    style="width:72px; height:72px; border-radius:50%; background:rgba(255,255,255,0.15); backdrop-filter:blur(8px); border:2px solid rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
                 </div>
             </div>
         </div>
@@ -58,56 +65,262 @@
     <!-- ── Page content ── -->
     <div id="page-content">
 
-        <section class="text-[#F0F8E3] py-20 sm:py-32 px-5 sm:px-6">
+        <section id="about" class="text-[#F0F8E3] py-20 sm:py-32 px-5 sm:px-6">
             <div class="max-w-4xl mx-auto">
                 <p class="text-xs sm:text-sm tracking-[0.3em] uppercase text-gray-500 mb-3 sm:mb-4">About</p>
                 <h2 class="text-3xl sm:text-5xl font-black uppercase mb-6 sm:mb-8 leading-tight">
-                    Skater.<br>Creator.<br>Filmmaker.
+                    Junior Developer
                 </h2>
                 <p class="text-gray-400 text-base sm:text-lg leading-relaxed max-w-xl">
-                    Marshall Ryan captures the raw energy of street skating through film.
-                    Based wherever the next spot is.
+                    Hi! My name is Hugo Amuan, and I'm a recent graduate from the British Columbia Institute of
+                    Technology, where I earned a diploma in Computer Systems Technology with a specialization in the
+                    Programming Paradigms option.<br><br>
+
+                    I enjoy working across both object-oriented and functional programming, and I like building systems
+                    that combine performance, structure, and usability. I've worked on projects ranging from VR training
+                    simulations and multiplayer browser games to AI-powered job tools and concurrent networking
+                    servers.<br><br>
+
+                    I'm currently open to opportunities in full-stack, frontend, or backend development roles. : )
                 </p>
             </div>
         </section>
 
-        <!-- Gallery Section -->
-        <section id="gallery-section" class="text-[#F0F8E3] py-20 sm:py-32 border-t border-white/10">
-            <div class="max-w-5xl mx-auto px-5 sm:px-6">
-                <p class="text-xs sm:text-sm tracking-[0.3em] uppercase text-gray-500 mb-12 sm:mb-20">Gallery</p>
-                <div id="galleries-list"></div>
+        <section id="projects" class="projects-section">
+            <p class="section-label">Projects</p>
+
+            <!-- ── 01 · BCIT MRI VR Simulator ── -->
+            <div class="project-card">
+                <div class="project-media">
+                    <video src="assets/portfolio_demo_mri.mp4" autoplay muted loop playsinline></video>
+                </div>
+                <div class="project-info">
+                    <span class="project-number">01</span>
+                    <h3 class="project-title">BCIT MRI<br>VR Simulator</h3>
+                    <div class="project-desc">
+                        <ul>
+                            <li>Refactored codebase and resolved 20+ bugs, improving stability in a real-time VR
+                                environment</li>
+                            <li>Added improved controls, toggleable hints, and a new Brain Exam procedure</li>
+                            <li>Reviewed by Vancouver Coastal Health for potential clinical training use</li>
+                        </ul>
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag">C#</span>
+                        <span class="tag">Unity</span>
+                        <span class="tag">OpenXR</span>
+                        <span class="tag">HTC Vive Focus</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/hugoamuan/bcit-mri-vr-unity-simulator" target="_blank"
+                            rel="noopener" class="proj-link">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.607.069-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                            </svg>
+                            GitHub
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=TuToLZRnVY8" target="_blank" rel="noopener"
+                            class="proj-link">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                <polyline points="15 3 21 3 21 9" />
+                                <line x1="10" y1="14" x2="21" y2="3" />
+                            </svg>
+                            Demo Video
+                        </a>
+                    </div>
+                </div>
             </div>
+
+            <!-- ── 02 · Bloc The Line ── -->
+            <div class="project-card">
+                <div class="project-media">
+                    <video src="assets/portfolio_demo_blokus.mp4" autoplay muted loop playsinline></video>
+                </div>
+                <div class="project-info">
+                    <span class="project-number">02</span>
+                    <h3 class="project-title">Bloc The Line</h3>
+                    <div class="project-desc">
+                        <ul>
+                            <li>Developed dynamic UI components displaying live player state updates via Phoenix
+                                LiveView</li>
+                            <li>Designed and integrated custom 2D game assets into the rendering pipeline</li>
+                            <li>Multiplayer Blokus clone running fully in-browser with real-time sync</li>
+                        </ul>
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag">Elixir</span>
+                        <span class="tag">Phoenix LiveView</span>
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">HTML/CSS</span>
+                        <span class="tag">LibreSprite</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/kamalkdolikay/bloc_the_line" target="_blank" rel="noopener"
+                            class="proj-link">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.607.069-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                            </svg>
+                            GitHub
+                        </a>
+                        <a href="https://bloc-the-line-dev.onrender.com/" target="_blank" rel="noopener"
+                            class="proj-link">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                <polyline points="15 3 21 3 21 9" />
+                                <line x1="10" y1="14" x2="21" y2="3" />
+                            </svg>
+                            Play Here!
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 03 · HelpMeLandAJob ── -->
+            <div class="project-card">
+                <div class="project-media">
+                    <img src="assets/portfolio_demo_helpmelandajob.png" alt="HelpMeLandAJob screenshot">
+                </div>
+                <div class="project-info">
+                    <span class="project-number">03</span>
+                    <h3 class="project-title">HelpMe<br>LandAJob</h3>
+                    <div class="project-desc">
+                        <ul>
+                            <li>Self-hosted a quantized LLaMA 3.2 model on DigitalOcean to generate AI job
+                                recommendations</li>
+                            <li>Built a LinkedIn job scraper with caching and multi-selector fallback parsing</li>
+                            <li>Token-based skill-matching algorithm to improve filtering accuracy without false
+                                positives</li>
+                        </ul>
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">FastAPI</span>
+                        <span class="tag">LLaMA 3.2</span>
+                        <span class="tag">BeautifulSoup</span>
+                        <span class="tag">Linux</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/hugoamuan/HelpMeLandAJob" target="_blank" rel="noopener"
+                            class="proj-link">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.607.069-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 04 · Concurrent Chat Server ── -->
+            <div class="project-card">
+                <div class="project-media">
+                    <video src="assets/portfolio_demo_chatapp.mp4" autoplay muted loop playsinline></video>
+                </div>
+                <div class="project-info">
+                    <span class="project-number">04</span>
+                    <h3 class="project-title">Concurrent<br>Chat Server</h3>
+                    <div class="project-desc">
+                        <ul>
+                            <li>Designed concurrent TCP chat servers in Elixir (OTP/GenServer) and Go (goroutines) with
+                                real-time comms</li>
+                            <li>Built CLI clients supporting non-blocking, cross-language messaging across distributed
+                                systems</li>
+                            <li>Modular architecture separating networking, protocol, and client layers for
+                                maintainability</li>
+                        </ul>
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag">Elixir</span>
+                        <span class="tag">OTP / GenServer</span>
+                        <span class="tag">Go</span>
+                        <span class="tag">Java</span>
+                        <span class="tag">TCP</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/hugoamuan/go-concurrent-chat-server" target="_blank" rel="noopener"
+                            class="proj-link">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.607.069-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                            </svg>
+                            GitHub (Go)
+                        </a>
+                        <a href="https://github.com/hugoamuan/elixir-concurrent-chatroom" target="_blank" rel="noopener"
+                            class="proj-link">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.607.069-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                            </svg>
+                            GitHub (Elixir)
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 05 · Conway's Game of Life (Rust + WASM) ── -->
+            <div class="project-card">
+                <div class="project-media">
+                    <video src="assets/portfolio_demo_wasm.mp4" autoplay muted loop playsinline></video>
+                </div>
+                <div class="project-info">
+                    <span class="project-number">05</span>
+                    <h3 class="project-title">Conway's<br>Game of Life</h3>
+                    <div class="project-desc">
+                        <ul>
+                            <li>Created as an assignment to learn Rust lifetimes, ownership and borrows</li>
+                            <li>Simulates cellular automaton rules on a 2D grid</li>
+                            <li>Compiled to WebAssembly to run directly in the browser</li>
+                        </ul>
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag">Rust</span>
+                        <span class="tag">WebAssembly</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/hugoamuan/Game-Of-Life" target="_blank" rel="noopener"
+                            class="proj-link">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.607.069-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                            </svg>
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
-        <!-- Projects Section -->
-        <section id="projects-section" class="text-[#F0F8E3] py-20 sm:py-32 px-5 sm:px-6 border-t border-white/10">
-            <div class="max-w-5xl mx-auto">
-                <p class="text-xs sm:text-sm tracking-[0.3em] uppercase text-gray-500 mb-12 sm:mb-20">Work</p>
-                <div id="projects-list"></div>
+        <footer class="border-t border-white/10 px-5 py-12 sm:py-16 text-center">
+            <div class="max-w-4xl mx-auto flex flex-col items-center gap-6">
+                <button
+                    onclick="navigator.clipboard.writeText('hugo.amuan@icloud.com').then(() => this.innerText = 'copied!')"
+                    class="text-gray-400 hover:text-[#F0F8E3] transition text-sm tracking-widest uppercase font-mono cursor-pointer bg-transparent border-none">
+                    hugo.amuan@icloud.com
+                </button>
+                <div class="flex gap-6 items-center">
+                    <a href="https://github.com/hugoamuan" target="_blank" rel="noopener"
+                        class="text-gray-600 hover:text-[#F0F8E3] transition text-xs tracking-widest uppercase font-mono">
+                        GitHub
+                    </a>
+                    <span class="text-gray-700">·</span>
+                    <a href="https://www.linkedin.com/in/hugo-amuan/" target="_blank" rel="noopener"
+                        class="text-gray-600 hover:text-[#F0F8E3] transition text-xs tracking-widest uppercase font-mono">
+                        LinkedIn
+                    </a>
+                </div>
             </div>
-        </section>
-
-        <!-- Vimeo Modal -->
-        <div id="vimeo-modal" style="display:none; position:fixed; inset:0; z-index:100; background:rgba(0,0,0,0.95); align-items:center; justify-content:center; padding:20px;">
-            <button id="modal-close" style="position:absolute; top:20px; right:24px; color:white; font-size:2rem; background:none; border:none; cursor:pointer; line-height:1;">&#x2715;</button>
-            <div style="width:90vw; max-width:900px; aspect-ratio:16/9;">
-                <iframe id="modal-iframe" src="" style="width:100%; height:100%; border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
-            </div>
-        </div>
-
-        <footer class="border-t border-white/10 px-5 py-10 sm:py-12 text-center text-gray-600 text-xs sm:text-sm tracking-widest uppercase">
-            © 2026 Marshall Ryan
         </footer>
 
-    </div>
-    <!-- Image Lightbox -->
-    <div id="img-lightbox">
-        <button id="img-lightbox-close">&#x2715;</button>
-        <button id="img-lightbox-prev">&#8592;</button>
-        <img id="img-lightbox-img" src="" alt="">
-        <button id="img-lightbox-next">&#8594;</button>
     </div>
 
     <script src="scripts/index.js"></script>
 </body>
+
 </html>
