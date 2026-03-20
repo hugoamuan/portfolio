@@ -153,7 +153,6 @@ function drawMask(progress) {
     // destination-out composite mode: anything drawn ERASES pixels
     // instead of painting them. So filling a circle erases the black,
     // revealing the video underneath.
-    // We use a radial gradient so the edge of the hole is soft (vignette).
     const gradient = ctx.createRadialGradient(
         cx, cy, irisR * 0.75, // inner circle: fully transparent (erased)
         cx, cy, irisR         // outer edge: fully opaque (not erased)
@@ -215,17 +214,16 @@ window.addEventListener('scroll', () => {
 
 // ═══════════════════════════════════════════════════════
 // RENDER LOOP
-// Runs every animation frame (~60fps).
-// Lerps currentProgress toward targetProgress for
-// buttery smooth animation, then redraws the mask.
+// Renders when there is a change (scroll)
 // ═══════════════════════════════════════════════════════
 
 function loop() {
-    // Lerp: move 8% of the remaining distance each frame
-    // This creates the smooth deceleration effect
-    currentProgress += (targetProgress - currentProgress) * 0.08;
-    drawMask(currentProgress);
-    requestAnimationFrame(loop); // schedule next frame
+    const diff = targetProgress - currentProgress;
+    if (Math.abs(diff) > 0.0001) {
+        currentProgress += diff * 0.08;
+        drawMask(currentProgress);
+    }
+    requestAnimationFrame(loop);
 }
 
 
@@ -244,6 +242,7 @@ video.addEventListener('canplay', () => {
 });
 
 window.addEventListener('load', () => {
+    drawMask(0);
     // If video is somehow already ready before canplay fired
     if (video.readyState < 2) loop();
 
@@ -254,399 +253,17 @@ window.addEventListener('load', () => {
     }, { once: true }); // { once:true } removes the listener after first touch
 });
 
-// iOS pauses videos when the user switches tabs or locks their screen.
-// Resume playback as soon as the page becomes visible again.
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
-        video.play().catch(() => {});
-    }
+document.querySelectorAll('.project-media video').forEach(vid => {
+    vid.muted = true;
+    vid.load();
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                vid.play().catch(() => {});
+            } else {
+                vid.pause();
+            }
+        });
+    }, { threshold: 0.1 });
+    observer.observe(vid);
 });
-
-
-// ═══════════════════════════════════════════════════════
-// PROJECTS — load from JSON, render vertically like makeshit.co
-// Each project = category label + client/title + row of GIFs
-// Clicking any project opens the Vimeo in a modal
-// ═══════════════════════════════════════════════════════
-
-const modal        = document.getElementById('vimeo-modal');
-const modalIframe  = document.getElementById('modal-iframe');
-const modalClose   = document.getElementById('modal-close');
-
-function openModal(vimeoUrl) {
-    // Convert vimeo.com/ID to player.vimeo.com/video/ID
-    const id = vimeoUrl.split('/').pop();
-    modalIframe.src = `https://player.vimeo.com/video/${id}?autoplay=1`;
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // prevent background scroll
-}
-
-function closeModal() {
-    modal.style.display = 'none';
-    modalIframe.src = ''; // stop video playing in background
-    document.body.style.overflow = '';
-}
-
-modalClose.addEventListener('click', closeModal);
-
-// Close on backdrop click (not on the video itself)
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-});
-
-// Close on Escape key
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
-});
-
-function renderProjects(projects) {
-    const list = document.getElementById('projects-list');
-
-    projects.forEach((project, i) => {
-        const row = document.createElement('div');
-        row.style.cssText = `
-            margin-bottom: 80px;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        `;
-
-        // GIF row — sized responsively via CSS .gif-row
-        const gifRow = document.createElement('div');
-        gifRow.className = 'gif-row';
-
-        project.gifs.forEach(gifUrl => {
-            const img = document.createElement('img');
-            img.src = gifUrl;
-            img.alt = project.title;
-            gifRow.appendChild(img);
-        });
-
-        // Project info
-        const info = document.createElement('div');
-        info.style.cssText = 'display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px;';
-        info.innerHTML = `
-            <div>
-                <span style="font-size:0.7rem; letter-spacing:0.25em; text-transform:uppercase; color:#6b7280;">${project.category}</span>
-                <span style="color:#374151; margin:0 10px;">·</span>
-                <span style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#6b7280;">${project.date}</span>
-            </div>
-            <div style="text-align:right;">
-                <span style="font-size:1rem; font-weight:700; color:#F0F8E3; text-transform:uppercase; letter-spacing:0.05em;">${project.client}</span>
-                <span style="color:#4b5563; margin:0 8px;">/</span>
-                <span style="font-size:1rem; color:#9ca3af; font-style:italic;">${project.title}</span>
-            </div>
-        `;
-
-        row.appendChild(gifRow);
-        row.appendChild(info);
-
-        // Hover effect
-        row.addEventListener('mouseenter', () => {
-            gifRow.querySelectorAll('img').forEach(img => img.style.opacity = '0.75');
-        });
-        row.addEventListener('mouseleave', () => {
-            gifRow.querySelectorAll('img').forEach(img => img.style.opacity = '1');
-        });
-
-        // Click to open modal
-        row.addEventListener('click', () => openModal(project.vimeoUrl));
-
-        list.appendChild(row);
-
-        // Staggered fade-in as rows enter viewport
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        observer.observe(row);
-    });
-}
-
-// projects rendered via combined fetch below
-
-
-// ═══════════════════════════════════════════════════════
-// GALLERY CAROUSELS
-// Each gallery = a title + horizontally scrollable image track
-// Supports: drag to scroll, prev/next buttons, dot indicators
-// ═══════════════════════════════════════════════════════
-
-// function renderGalleries(galleries) {
-//     const list = document.getElementById('galleries-list');
-
-//     galleries.forEach(gallery => {
-//         const block = document.createElement('div');
-//         block.className = 'gallery-block';
-
-//         // Title
-//         const title = document.createElement('p');
-//         title.className = 'gallery-title';
-//         title.textContent = gallery.title;
-//         block.appendChild(title);
-
-//         // Carousel wrapper (holds track + buttons)
-//         const wrapper = document.createElement('div');
-//         wrapper.className = 'carousel-wrapper';
-
-//         // Scrollable image track
-//         const track = document.createElement('div');
-//         track.className = 'carousel-track';
-
-//         gallery.images.forEach((src, idx) => {
-//             const img = document.createElement('img');
-//             img.src       = src;
-//             img.alt       = gallery.title;
-//             img.draggable = false;
-//             // Click to open lightbox at this image's index
-//             img.addEventListener('click', () => openLightbox(gallery.images, idx));
-//             track.appendChild(img);
-//         });
-
-//         // Prev button
-//         const prevBtn = document.createElement('button');
-//         const gap = 8;
-//         prevBtn.className = 'carousel-btn prev';
-//         prevBtn.innerHTML = '&#8592;';
-//         prevBtn.addEventListener('click', () => {
-//             const imgW = track.querySelector('img').offsetWidth + gap;
-//             track.scrollBy({ left: -imgW, behavior: 'smooth' });
-//         });
-
-//         // Next button
-//         const nextBtn = document.createElement('button');
-//         nextBtn.className = 'carousel-btn next';
-//         nextBtn.innerHTML = '&#8594;';
-//         nextBtn.addEventListener('click', () => {
-//             track.scrollBy({ left: 540, behavior: 'smooth' });
-//         });
-
-//         wrapper.appendChild(prevBtn);
-//         wrapper.appendChild(track);
-//         wrapper.appendChild(nextBtn);
-//         block.appendChild(wrapper);
-
-//         // Dot indicators
-//         const dotsRow = document.createElement('div');
-//         dotsRow.className = 'carousel-dots';
-//         const dots = gallery.images.map((_, i) => {
-//             const dot = document.createElement('div');
-//             dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-//             dot.addEventListener('click', () => {
-//                 const imgWidth = track.querySelector('img').offsetWidth + 8;
-//                 track.scrollTo({ left: imgWidth * i, behavior: 'smooth' });
-//             });
-//             dotsRow.appendChild(dot);
-//             return dot;
-//         });
-//         block.appendChild(dotsRow);
-
-//         // Update active dot on scroll
-//         track.addEventListener('scroll', () => {
-//             const imgWidth = track.querySelector('img').offsetWidth + 8;
-//             const index    = Math.round(track.scrollLeft / imgWidth);
-//             dots.forEach((d, i) => d.classList.toggle('active', i === index));
-//         });
-
-//         // ── Drag to scroll (mouse) ──
-//         let isDragging = false, startX = 0, startScroll = 0;
-
-//         track.addEventListener('mousedown', e => {
-//             isDragging  = true;
-//             startX      = e.pageX;
-//             startScroll = track.scrollLeft;
-//             track.classList.add('grabbing');
-//         });
-//         document.addEventListener('mousemove', e => {
-//             if (!isDragging) return;
-//             track.scrollLeft = startScroll - (e.pageX - startX);
-//         });
-//         document.addEventListener('mouseup', () => {
-//             isDragging = false;
-//             track.classList.remove('grabbing');
-//         });
-
-//         list.appendChild(block);
-//     });
-// }
-
-function renderGalleries(galleries) {
-    const list = document.getElementById('galleries-list');
-
-    galleries.forEach(gallery => {
-        const block = document.createElement('div');
-        block.className = 'gallery-block';
-
-        // Title
-        const title = document.createElement('p');
-        title.className = 'gallery-title';
-        title.textContent = gallery.title;
-        block.appendChild(title);
-
-        // Carousel wrapper (holds track + buttons)
-        const wrapper = document.createElement('div');
-        wrapper.className = 'carousel-wrapper';
-
-        // Scrollable image track
-        const track = document.createElement('div');
-        track.className = 'carousel-track';
-
-        gallery.images.forEach((src, idx) => {
-            const img = document.createElement('img');
-            img.src       = src;
-            img.alt       = gallery.title;
-            img.draggable = false;
-            // Click to open lightbox at this image's index
-            img.addEventListener('click', () => openLightbox(gallery.images, idx));
-            track.appendChild(img);
-        });
-
-        // Helper — snap to a specific index
-        function scrollToIndex(idx) {
-            const imgW  = track.querySelector('img').offsetWidth + 8;
-            const total = track.querySelectorAll('img').length;
-            // Clamp index within bounds
-            const target = Math.max(0, Math.min(idx, total - 1));
-            track.scrollTo({ left: imgW * target, behavior: 'smooth' });
-        }
-
-        // Track current index for button presses
-        let carouselIndex = 0;
-
-        // Prev button
-        const prevBtn = document.createElement('button');
-        prevBtn.className = 'carousel-btn prev';
-        prevBtn.innerHTML = '&#8592;';
-        prevBtn.addEventListener('click', () => {
-            carouselIndex = Math.max(0, carouselIndex - 1);
-            scrollToIndex(carouselIndex);
-        });
-
-        // Next button
-        const nextBtn = document.createElement('button');
-        nextBtn.className = 'carousel-btn next';
-        nextBtn.innerHTML = '&#8594;';
-        nextBtn.addEventListener('click', () => {
-            carouselIndex = Math.min(gallery.images.length - 1, carouselIndex + 1);
-            scrollToIndex(carouselIndex);
-        });
-
-        wrapper.appendChild(prevBtn);
-        wrapper.appendChild(track);
-        wrapper.appendChild(nextBtn);
-        block.appendChild(wrapper);
-
-        // Dot indicators
-        const dotsRow = document.createElement('div');
-        dotsRow.className = 'carousel-dots';
-        const dots = gallery.images.map((_, i) => {
-            const dot = document.createElement('div');
-            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-            dot.addEventListener('click', () => {
-                const imgWidth = track.querySelector('img').offsetWidth + 8;
-                track.scrollTo({ left: imgWidth * i, behavior: 'smooth' });
-            });
-            dotsRow.appendChild(dot);
-            return dot;
-        });
-        block.appendChild(dotsRow);
-
-        // Update active dot + sync carouselIndex when user manually scrolls
-        track.addEventListener('scroll', () => {
-            const imgWidth = track.querySelector('img').offsetWidth + 8;
-            const index    = Math.round(track.scrollLeft / imgWidth);
-            carouselIndex  = index; // keep button index in sync with manual scroll
-            dots.forEach((d, i) => d.classList.toggle('active', i === index));
-        });
-
-        // ── Drag to scroll (mouse) ──
-        let isDragging = false, startX = 0, startScroll = 0;
-
-        track.addEventListener('mousedown', e => {
-            isDragging  = true;
-            startX      = e.pageX;
-            startScroll = track.scrollLeft;
-            track.classList.add('grabbing');
-        });
-        document.addEventListener('mousemove', e => {
-            if (!isDragging) return;
-            track.scrollLeft = startScroll - (e.pageX - startX);
-        });
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-            track.classList.remove('grabbing');
-        });
-
-        list.appendChild(block);
-    });
-}
-
-// Fetch and render — reuse the same projects.json fetch
-fetch('projects.json')
-    .then(res => res.json())
-    .then(data => {
-        if (data.galleries) renderGalleries(data.galleries);
-        if (data.projects) renderProjects(data.projects);
-    })
-    .catch(err => console.error('Could not load projects.json:', err));
-
-
-// ═══════════════════════════════════════════════════════
-// IMAGE LIGHTBOX
-// Click any carousel image to open it fullscreen.
-// Navigate between images in the same album with arrows
-// or left/right arrow keys.
-// ═══════════════════════════════════════════════════════
-
-const lightbox      = document.getElementById('img-lightbox');
-const lightboxImg   = document.getElementById('img-lightbox-img');
-const lightboxClose = document.getElementById('img-lightbox-close');
-const lightboxPrev  = document.getElementById('img-lightbox-prev');
-const lightboxNext  = document.getElementById('img-lightbox-next');
-
-let currentImages = []; // all images in the current album
-let currentIndex  = 0;  // which one is open
-
-function openLightbox(images, index) {
-    currentImages = images;
-    currentIndex  = index;
-    lightboxImg.src = images[index];
-    lightbox.classList.add('open');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeLightbox() {
-    lightbox.classList.remove('open');
-    lightboxImg.src = '';
-    document.body.style.overflow = '';
-}
-
-function lightboxStep(dir) {
-    currentIndex = (currentIndex + dir + currentImages.length) % currentImages.length;
-    lightboxImg.src = currentImages[currentIndex];
-}
-
-lightboxClose.addEventListener('click', closeLightbox);
-lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); lightboxStep(-1); });
-lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); lightboxStep(1); });
-
-// Close on backdrop click
-lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) closeLightbox();
-});
-
-// Keyboard navigation
-document.addEventListener('keydown', (e) => {
-    if (!lightbox.classList.contains('open')) return;
-    if (e.key === 'ArrowLeft')  lightboxStep(-1);
-    if (e.key === 'ArrowRight') lightboxStep(1);
-    if (e.key === 'Escape')     closeLightbox();
-});
-
